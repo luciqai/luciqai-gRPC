@@ -104,9 +104,6 @@ open class LuciqClientInterceptor<Request: LuciqGRPCDataProtocol, Response: Luci
                 networkLog.errorCode = status.code.rawValue
                 networkLog.errorDomain = status.description
             }
-            if let startTime = networkLog.startTime {
-                networkLog.duration = Date().timeIntervalSince1970 - startTime
-            }
             addGrpcNetworkLog()
         }
 
@@ -120,9 +117,13 @@ open class LuciqClientInterceptor<Request: LuciqGRPCDataProtocol, Response: Luci
         networkLog.errorCode = (error as NSError).code
         networkLog.errorDomain = (error as NSError).domain
         addGrpcNetworkLog()
+        context.errorCaught(error)
     }
 
     func addGrpcNetworkLog() {
+        if let startTime = networkLog.startTime {
+            networkLog.duration = Date().timeIntervalSince1970 - startTime
+        }
         if networkLog.responseHeaders["content-type"] != nil {
             networkLog.requestHeaders["content-type"] = networkLog.responseHeaders["content-type"]
         }
