@@ -6,7 +6,27 @@ There's `Luciq_gRPC_Swift` which is a Swift framework and intended to be used wi
 
 ## Installation
 
+### CocoaPods
+
 Add pod `Luciq-gRPC-Swift` or pod `'Luciq-gRPC-ObjC'` to your `podfile`
+
+### Swift Package Manager
+
+Swift Package Manager ships only the Swift interceptor. For the Objective-C interceptor, use CocoaPods.
+
+Add the package to your `Package.swift`, or add its URL in Xcode:
+
+```swift
+.package(url: "https://github.com/luciqai/luciqai-gRPC.git", from: "0.3.0")
+```
+
+Then add the `Luciq-gRPC-Swift` product to your target, and use `import Luciq_gRPC_Swift`:
+
+```swift
+.product(name: "Luciq-gRPC-Swift", package: "luciqai-gRPC")
+```
+
+The package adds Luciq from `https://github.com/luciqai/luciq-ios-sdk.git`, version 18.0.0 up to, but not including, 20.0.0. If your app adds Luciq itself, add it with Swift Package Manager and use a version in this range.
 
 ## Requirements
 
