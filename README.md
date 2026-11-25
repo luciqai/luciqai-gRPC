@@ -53,9 +53,9 @@ Luciq version >= 18.0.0 and < 20.0.0
 1. Make sure you import our destination first: `import Luciq_gRPC_Swift`
 2. Create Interceptor factory that confirms to the interceptor factory protocol that you have in your .grpc file
 3. Make sure to return new instance of our Interceptor `LuciqClientInterceptor()` in the methods that you need us to log
-4. Conform on `LuciqGRPCDataProtocol` for request and response models which requires that you expose your models as `Data`
-5. You can convert your model to `Data` by conforming to `Encodable`
-6. You can pass the port optional in `LuciqClientInterceptor` as `LuciqClientInterceptor(port:)` to see it on the dashboard
+4. You can pass the port optional in `LuciqClientInterceptor` as `LuciqClientInterceptor(port:)` to see it on the dashboard
+
+`LuciqClientInterceptor` measures the size of each request message and each response message. Your models do not need to conform to a protocol. `LuciqGRPCDataProtocol` is deprecated, so you can remove your conformances to it.
  
 ### Sample code 
 
@@ -80,23 +80,6 @@ class ExampleClientInterceptorFactory: Echo_EchoClientInterceptorFactoryProtocol
   func makeUpdateInterceptors() -> [ClientInterceptor<Echo_EchoRequest, Echo_EchoResponse>] {
     return [LuciqClientInterceptor()]
   }
-}
-
-extension GrpcAutomation_RepeaterRequest: LuciqGRPCDataProtocol, Encodable {
-    enum CodingKeys: String, CodingKey {
-        case message, unknownFields
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(message, forKey: .message)
-    }
-    
-    public var gRPCRequestData: Data? {
-        let jsonEncoder = JSONEncoder()
-        let data = try? jsonEncoder.encode(self)
-        return data
-    }
 }
 ```
 

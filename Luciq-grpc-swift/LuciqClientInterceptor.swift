@@ -9,9 +9,10 @@ import Foundation
 import GRPC
 import NIO
 import NIOHPACK
+import SwiftProtobuf
 import LuciqSDK
 
-open class LuciqClientInterceptor<Request: LuciqGRPCDataProtocol, Response: LuciqGRPCDataProtocol>: ClientInterceptor<Request, Response>, @unchecked Sendable {
+open class LuciqClientInterceptor<Request, Response>: ClientInterceptor<Request, Response>, @unchecked Sendable {
 
     public init(port: Int? = nil) {
         super.init()
@@ -59,9 +60,7 @@ open class LuciqClientInterceptor<Request: LuciqGRPCDataProtocol, Response: Luci
             }
 
         case let .message(request, _):
-            if let dataCount = request.gRPCRequestData?.count {
-                networkLog.requestBodySize += dataCount
-            }
+            networkLog.requestBodySize += serializedSize(of: request)
         case .end: break
         }
         
@@ -83,9 +82,7 @@ open class LuciqClientInterceptor<Request: LuciqGRPCDataProtocol, Response: Luci
             }
 
         case let .message(response):
-            if let dataCount = response.gRPCRequestData?.count {
-                networkLog.responseBodySize += dataCount
-            }
+            networkLog.responseBodySize += serializedSize(of: response)
 
         case let .end(status, trailers):
             networkLog.responseCode = status.code.rawValue
@@ -167,6 +164,22 @@ open class LuciqClientInterceptor<Request: LuciqGRPCDataProtocol, Response: Luci
         return authority
     }
     
+    private func serializedSize(of message: Any) -> Int {
+        do {
+            if let message = message as? any SwiftProtobuf.Message {
+                return try message.serializedData().count
+            }
+            if let payload = message as? GRPCPayload {
+                var buffer = ByteBufferAllocator().buffer(capacity: 0)
+                try payload.serialize(into: &buffer)
+                return buffer.readableBytes
+            }
+        } catch {
+            return 0
+        }
+        return 0
+    }
+
     private func addingExternalTraceIDHeader(to metadataHeaders: HPACKHeaders) -> HPACKHeaders {
         let externalTraceIDHeader = NetworkLogger.newExternalTraceIDHeader()
         guard let externalTraceIDHeader = externalTraceIDHeader else {
@@ -198,6 +211,7 @@ struct GRPCNetworkLog {
     var serverErrorMessage: String?
 }
 
+@available(*, deprecated, message: "LuciqClientInterceptor measures each message. Remove this conformance.")
 public protocol LuciqGRPCDataProtocol {
     var gRPCRequestData: Data? { get }
 }

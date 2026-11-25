@@ -28,5 +28,6 @@ Pod::Spec.new do |s|
   s.requires_arc     = true
   s.dependency 'Luciq', '>= 18.0.0', '< 20.0.0'
   s.dependency 'gRPC-Swift'
+  s.dependency 'SwiftProtobuf', '~> 1.19'
   s.swift_versions = '5.5'
 end
