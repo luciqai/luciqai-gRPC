@@ -39,7 +39,7 @@ GRPCNetworkLog *networkLog;
     networkLog.url = [NSString stringWithFormat:@"grpc://%@/%@",[requestOptions host], [requestOptions path].pathComponents[1]];
     networkLog.gRPCMethod = [requestOptions path].pathComponents[2];
     networkLog.startTime = [[NSDate date] timeIntervalSince1970];
-    networkLog.requestHeaders = [updatedCallOptions mutableCopy];
+    networkLog.requestHeaders = [updatedCallOptions.initialMetadata mutableCopy] ?: [NSMutableDictionary dictionary];
     if (networkLog.requestHeaders[@"content-type"] == nil) {
         [networkLog.requestHeaders setObject:@"application/grpc" forKey:@"content-type"];
     }
