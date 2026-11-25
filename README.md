@@ -11,6 +11,7 @@ Add pod `Luciq-gRPC-Swift` or pod `'Luciq-gRPC-ObjC'` to your `podfile`
 ## Requirements
 
 iOS version >= 15.0
+tvOS version >= 15.0
 Luciq version >= 18.0.0 and < 20.0.0
 
 ## Swift Example

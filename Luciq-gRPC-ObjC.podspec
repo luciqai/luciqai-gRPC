@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name             = "Luciq-gRPC-ObjC"
   s.version          = "0.3.0"
-  s.summary          = "Capturing gRPC requests for iOS"
+  s.summary          = "Capturing gRPC requests for iOS and tvOS"
   s.homepage         = "https://luciq.ai"
   s.license          = {
       :type => 'Commercial',
@@ -20,7 +20,8 @@ Pod::Spec.new do |s|
       LICENSE
     }
   s.author           = { "Luciq" => "contact@luciq.ai" }
-  s.platform         = :ios, '15.0'
+  s.ios.deployment_target = '15.0'
+  s.tvos.deployment_target = '15.0'
   s.source           = { :git => "https://github.com/luciqai/luciqai-gRPC.git", :tag => "#{s.version}" }
 
   s.source_files = 'Luciq-grpc-objc/**/*.{h,m,swift}'
