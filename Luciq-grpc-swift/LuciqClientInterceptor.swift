@@ -11,7 +11,7 @@ import NIO
 import NIOHPACK
 import LuciqSDK
 
-open class LuciqClientInterceptor<Request: LuciqGRPCDataProtocol, Response: LuciqGRPCDataProtocol>: ClientInterceptor<Request, Response> {
+open class LuciqClientInterceptor<Request: LuciqGRPCDataProtocol, Response: LuciqGRPCDataProtocol>: ClientInterceptor<Request, Response>, @unchecked Sendable {
 
     public init(port: Int? = nil) {
         super.init()
