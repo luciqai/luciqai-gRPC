@@ -10,6 +10,21 @@ There's `Luciq_gRPC_Swift` which is a Swift framework and intended to be used wi
 
 Add pod `Luciq-gRPC-Swift` or pod `'Luciq-gRPC-ObjC'` to your `podfile`
 
+Some gRPC dependencies set an iOS or tvOS deployment target below 15.0. Xcode 27 rejects it with an error such as `'IPHONEOS_DEPLOYMENT_TARGET' is set to 10.0`. Add this hook to your `podfile` to raise it:
+
+```ruby
+post_install do |installer|
+  installer.generated_projects.flat_map(&:targets).each do |target|
+    target.build_configurations.each do |config|
+      ['IPHONEOS_DEPLOYMENT_TARGET', 'TVOS_DEPLOYMENT_TARGET'].each do |setting|
+        current = config.build_settings[setting]
+        config.build_settings[setting] = '15.0' if current && current.to_f < 15.0
+      end
+    end
+  end
+end
+```
+
 ### Swift Package Manager
 
 Swift Package Manager ships only the Swift interceptor. For the Objective-C interceptor, use CocoaPods.
@@ -130,3 +145,14 @@ let client = Echo_EchoClient(channel: channel, interceptors: ExampleClientInterc
     options.interceptorFactories = interceptorFactories;
 
 ```
+
+## Release
+
+`pod lib lint` and `pod trunk push` need the settings in `pod-lint.xcconfig`, because Xcode 27 rejects the deployment targets of some gRPC pods. Run them with `scripts/pod.sh`, which passes that file to `xcodebuild`:
+
+```sh
+scripts/pod.sh lib lint Luciq-gRPC-Swift.podspec
+scripts/pod.sh trunk push Luciq-gRPC-Swift.podspec
+```
+
+Do the same for `Luciq-gRPC-ObjC.podspec`.
