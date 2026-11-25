@@ -1,11 +1,11 @@
 //
-//  InstabugClientInterceptor.m
-//  Instabug-grpc-objc
+//  LuciqClientInterceptor.m
+//  Luciq-grpc-objc
 //
 //  Created by Hussein Kishk on 27/01/2022.
 //
 
-#import "InstabugClientInterceptor.h"
+#import "LuciqClientInterceptor.h"
 
 @interface GRPCNetworkLog : NSObject
 @property NSString *url;
@@ -28,7 +28,7 @@
 
 @end
 
-@implementation InstabugClientInterceptor
+@implementation LuciqClientInterceptor
 
 GRPCNetworkLog *networkLog;
 
@@ -85,7 +85,7 @@ GRPCNetworkLog *networkLog;
 
     networkLog.contentType = networkLog.responseHeaders[@"content-type"];
 
-    [IBGNetworkLogger addGrpcNetworkLogWithUrl:networkLog.url
+    [LCQNetworkLogger addGrpcNetworkLogWithUrl:networkLog.url
                                requestBodySize:networkLog.requestBodySize
                               responseBodySize:networkLog.responseBodySize
                                   responseCode:networkLog.statusCode
@@ -105,7 +105,7 @@ GRPCNetworkLog *networkLog;
 // MARK: - Helpers
 
 - (GRPCCallOptions *)addExternalTraceHeaderWithCallOptions:(GRPCCallOptions *)originalCallOptions {
-    NSDictionary *externalTraceIDHeader = [IBGNetworkLogger newExternalTraceIDHeader];
+    NSDictionary *externalTraceIDHeader = [LCQNetworkLogger newExternalTraceIDHeader];
     if (externalTraceIDHeader == nil) {
         return originalCallOptions;
     }

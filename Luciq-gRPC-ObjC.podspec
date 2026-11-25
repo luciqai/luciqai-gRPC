@@ -1,12 +1,12 @@
 Pod::Spec.new do |s|
-  s.name             = "Instabug-gRPC-ObjC"
-  s.version          = "0.2.1"
+  s.name             = "Luciq-gRPC-ObjC"
+  s.version          = "0.3.0"
   s.summary          = "Capturing gRPC requests for iOS"
-  s.homepage         = "http://instabug.com"
+  s.homepage         = "https://luciq.ai"
   s.license          = {
       :type => 'Commercial',
       :text => <<-LICENSE
-                Copyright (C) 2014 Instabug
+                Copyright (C) 2025 Luciq
                 Permission is hereby granted to use this framework as is, modification are not allowed.
                 All rights reserved.
         
@@ -19,12 +19,12 @@ Pod::Spec.new do |s|
         THE SOFTWARE.
       LICENSE
     }
-  s.author           = { "Instabug" => "contactus@instabug.com" }
-  s.platform         = :ios, '11.0'
-  s.source           = { :git => "https://github.com/Instabug/Instabug-gRPC.git", :tag => "#{s.version}" }
+  s.author           = { "Luciq" => "contact@luciq.ai" }
+  s.platform         = :ios, '15.0'
+  s.source           = { :git => "https://github.com/luciqai/luciqai-gRPC.git", :tag => "#{s.version}" }
 
-  s.source_files = 'Instabug-grpc-objc/**/*.{h,m,swift}'
+  s.source_files = 'Luciq-grpc-objc/**/*.{h,m,swift}'
   s.requires_arc     = true
-  s.dependency 'Instabug', '>= 12.4.0'
+  s.dependency 'Luciq', '>= 18.0.0', '< 20.0.0'
   s.dependency 'gRPC'
 end

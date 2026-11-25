@@ -37,7 +37,7 @@ Replace this with notes for QC, if any.
 - Feature Request UI
 - PushNotification UI
 - NetworkLogging
-- Instabug logs
+- Luciq logs
 - UserEvents
 - UserData
 - UserSteps

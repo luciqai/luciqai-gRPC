@@ -1,25 +1,25 @@
-# Instabug-gRPC
-This is a destination for Instabug to support logging gRPC requests.
+# [luciqai-gRPC](https://github.com/luciqai/luciqai-gRPC)
+This is a destination for Luciq to support logging gRPC requests.
 
 ## Compatibility
-There's `Instabug_gRPC_Swift` which is a Swift framework and intended to be used with Swift projects. And there's `Instabug_gRPC_Objc` which intended to be used with Objective-C projects
+There's `Luciq_gRPC_Swift` which is a Swift framework and intended to be used with Swift projects. And there's `Luciq_gRPC_ObjC` which intended to be used with Objective-C projects
 
 ## Installation
 
-Add pod `Instabug-gRPC-Swift` or pod `'Instabug-gRPC-ObjC'` to your `podfile`
+Add pod `Luciq-gRPC-Swift` or pod `'Luciq-gRPC-ObjC'` to your `podfile`
 
 ## Requirements
 
-iOS version >= 10.0
-Instabug version >= 10.11.8
+iOS version >= 15.0
+Luciq version >= 18.0.0 and < 20.0.0
 
 ## Swift Example
-1. Make sure you import our destination first: `import Instabug_gRPC_Swift`
+1. Make sure you import our destination first: `import Luciq_gRPC_Swift`
 2. Create Interceptor factory that confirms to the interceptor factory protocol that you have in your .grpc file
-3. Make sure to return new instance of our Interceptor `InstabugClientInterceptor()` in the methods that you need us to log
-4. Conform on `InstabugGRPCDataProtocol` for request and response models which requires that you expose your models as `Data`
+3. Make sure to return new instance of our Interceptor `LuciqClientInterceptor()` in the methods that you need us to log
+4. Conform on `LuciqGRPCDataProtocol` for request and response models which requires that you expose your models as `Data`
 5. You can convert your model to `Data` by conforming to `Encodable`
-6. You can pass the port optional in `InstabugClientInterceptor` as `InstabugClientInterceptor(port:)` to see it on the dashboard
+6. You can pass the port optional in `LuciqClientInterceptor` as `LuciqClientInterceptor(port:)` to see it on the dashboard
  
 ### Sample code 
 
@@ -27,26 +27,26 @@ Instabug version >= 10.11.8
 class ExampleClientInterceptorFactory: Echo_EchoClientInterceptorFactoryProtocol {
   // Returns an array of interceptors to use for the 'Get' RPC.
   func makeGetInterceptors() -> [ClientInterceptor<Echo_EchoRequest, Echo_EchoResponse>] {
-    return [InstabugClientInterceptor()]
+    return [LuciqClientInterceptor()]
   }
 
   // Returns an array of interceptors to use for the 'Expand' RPC.
   func makeExpandInterceptors() -> [ClientInterceptor<Echo_EchoRequest, Echo_EchoResponse>] {
-    return [InstabugClientInterceptor()]
+    return [LuciqClientInterceptor()]
   }
 
   // Returns an array of interceptors to use for the 'Collect' RPC.
   func makeCollectInterceptors() -> [ClientInterceptor<Echo_EchoRequest, Echo_EchoResponse>] {
-    return [InstabugClientInterceptor()]
+    return [LuciqClientInterceptor()]
   }
 
   // Returns an array of interceptors to use for the 'Update' RPC.
   func makeUpdateInterceptors() -> [ClientInterceptor<Echo_EchoRequest, Echo_EchoResponse>] {
-    return [InstabugClientInterceptor()]
+    return [LuciqClientInterceptor()]
   }
 }
 
-extension GrpcAutomation_RepeaterRequest: InstabugGRPCDataProtocol, Encodable {
+extension GrpcAutomation_RepeaterRequest: LuciqGRPCDataProtocol, Encodable {
     enum CodingKeys: String, CodingKey {
         case message, unknownFields
     }
@@ -61,6 +61,7 @@ extension GrpcAutomation_RepeaterRequest: InstabugGRPCDataProtocol, Encodable {
         let data = try? jsonEncoder.encode(self)
         return data
     }
+}
 ```
 
 And finally pass `ExampleClientInterceptorFactory()` to your client like this
@@ -78,11 +79,11 @@ let client = Echo_EchoClient(channel: channel, interceptors: ExampleClientInterc
 	@interface GRPCFactory : NSObject <GRPCInterceptorFactory>
 	```
 
-3. Override `createInterceptorWithManager` in `GRPCFactory` and return `InstabugClientInterceptor `
+3. Override `createInterceptorWithManager` in `GRPCFactory` and return `LuciqClientInterceptor `
 
 	```
 	- (nonnull GRPCInterceptor *)createInterceptorWithManager:(nonnull GRPCInterceptorManager *)interceptorManager {
-	    InstabugClientInterceptor *interceptor = [[InstabugClientInterceptor alloc] initWithInterceptorManager:interceptorManager dispatchQueue:dispatch_get_main_queue()];
+	    LuciqClientInterceptor *interceptor = [[LuciqClientInterceptor alloc] initWithInterceptorManager:interceptorManager dispatchQueue:dispatch_get_main_queue()];
 	    return  interceptor;
 	}
 	```
