@@ -1,6 +1,6 @@
 //
-//  InstabugClientInterceptor.swift
-//  InstabugClientInterceptor
+//  LuciqClientInterceptor.swift
+//  LuciqClientInterceptor
 //
 //  Created by Hussein Kishk on 09/01/2022.
 //
@@ -9,9 +9,9 @@ import Foundation
 import GRPC
 import NIO
 import NIOHPACK
-import Instabug
+import LuciqSDK
 
-open class InstabugClientInterceptor<Request: InstabugGRPCDataProtocol, Response: InstabugGRPCDataProtocol>: ClientInterceptor<Request, Response> {
+open class LuciqClientInterceptor<Request: LuciqGRPCDataProtocol, Response: LuciqGRPCDataProtocol>: ClientInterceptor<Request, Response>, @unchecked Sendable {
 
     public init(port: Int? = nil) {
         super.init()
@@ -197,6 +197,6 @@ struct GRPCNetworkLog {
     var serverErrorMessage: String?
 }
 
-public protocol InstabugGRPCDataProtocol {
+public protocol LuciqGRPCDataProtocol {
     var gRPCRequestData: Data? { get }
 }

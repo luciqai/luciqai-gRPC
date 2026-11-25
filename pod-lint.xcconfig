@@ -1,0 +1,5 @@
+// scripts/pod.sh passes this file to `pod lib lint` and `pod trunk push`: Xcode 27 rejects the lower targets of gRPC's pods.
+IPHONEOS_DEPLOYMENT_TARGET = 15.0
+TVOS_DEPLOYMENT_TARGET = 15.0
+// Lint fails on warnings, including documentation warnings from the headers of dependencies.
+CLANG_WARN_DOCUMENTATION_COMMENTS = NO
