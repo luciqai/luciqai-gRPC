@@ -27,5 +27,6 @@ Pod::Spec.new do |s|
   s.source_files = 'Luciq-grpc-objc/**/*.{h,m,swift}'
   s.requires_arc     = true
   s.dependency 'Luciq', '>= 18.0.0', '< 20.0.0'
-  s.dependency 'gRPC'
+  s.dependency 'gRPC/Interface'
+  s.dependency 'gRPC-RxLibrary'
 end
